@@ -16,7 +16,7 @@ class OcrController extends Controller
         if (empty($request->name)){
             return "name not found";
         }
-        $cmd= "ocrmypdf ".public_path('asset/ocr.pdf').' '.public_path($request->name).' --force-ocr';
+        $cmd= "ocrmypdf ".public_path('asset/Scan.pdf').' '.public_path($request->name).' --force-ocr';
 //        dd($cmd);
         $process = Process::timeout(900)->start($cmd);
 
