@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\Storage;
 
 class OcrController extends Controller
 {
@@ -13,25 +14,25 @@ class OcrController extends Controller
      */
     public function index(Request $request)
     {
-        if (empty($request->name)){
-            return "name not found";
-        }
-        $cmd= "ocrmypdf ".public_path('asset/Scan.pdf').' '.public_path($request->name).' --force-ocr';
-//        dd($cmd);
-        $process = Process::timeout(900)->start($cmd);
+       dispatch(new \App\Jobs\OcrProcess($request->request->all()));
 
-        while ($process->running()) {
-            echo $process->latestOutput();
-            echo $process->latestErrorOutput();
-
-            sleep(1);
-        }
-        $result = $process->wait();
-
-        if ($result->successful()) {
-            return "Done";
-        }
-        return $result->errorOutput();
+//        $cmd= "ocrmypdf ".public_path('asset/Scan.pdf').' '.public_path('').' --force-ocr';
+//    // dd($cmd);
+//        $process = Process::timeout(900)->start($cmd);
+//
+//
+//        while ($process->running()) {
+//            echo $process->latestOutput();
+//            echo $process->latestErrorOutput();
+//
+//            sleep(1);
+//        }
+//        $result = $process->wait();
+//
+//        if ($result->successful()) {
+//            return "Done";
+//        }
+//      dd($result->errorOutput());
     }
 
     /**
