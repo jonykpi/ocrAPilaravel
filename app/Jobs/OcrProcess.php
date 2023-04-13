@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -38,6 +39,8 @@ class OcrProcess implements ShouldQueue
         $stroage = Storage::put($file_path,base64_decode($this->request['attachments'][0]['content']));
 
 
+
+
        // $cmd= "ocrmypdf ".storage_path($file_path).' '.public_path($converted_file_path).' --force-ocr';
         $cmd= "ocrmypdf ".storage_path("app/".$file_path).' '.public_path($converted_file_path).' --force-ocr';
 
@@ -54,12 +57,16 @@ class OcrProcess implements ShouldQueue
         $result = $process->wait();
 
         if ($result->successful()) {
-            dd('success');
+            $send_file = base64_encode(file_get_contents(public_path($converted_file_path)));
+            $this->request['attachments'][0]['content'] = $send_file;
+            $response = Http::post('https://docs2ai.com/api/incoming', $this->request);
+            Log::info(json_encode('success ocr'));
+           // dd('success');
         }
-       dd($result->errorOutput());
+       Log::info(json_encode($result->errorOutput()));
 
-      $response = Http::post('https://docs2ai.com/api/incoming', $this->request);
-      dd($response);
+      //$response = Http::post('https://docs2ai.com/api/incoming', $this->request);
+    //  dd($response);
 
 
     }
