@@ -53,7 +53,7 @@ class OcrConvert implements ShouldQueue
 
             if ($result->successful()) {
                 $data = $this->request;
-                $data['content'] =base64_encode(file_get_contents($converted_file_path));
+                $data['content'] =base64_encode(file_get_contents(public_path($converted_file_path)));
                 $response = Http::post($this->request['callback'], $data);
 
             }
