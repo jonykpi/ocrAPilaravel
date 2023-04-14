@@ -19,3 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('incoming',[\App\Http\Controllers\Api\OcrController::class,'index']);
+Route::post('ocr-cconvert',[\App\Http\Controllers\Api\OcrController::class,'ocrConvert']);

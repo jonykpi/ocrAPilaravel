@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class OcrController extends Controller
 {
@@ -16,23 +19,17 @@ class OcrController extends Controller
     {
        dispatch(new \App\Jobs\OcrProcess($request->request->all()));
 
-//        $cmd= "ocrmypdf ".public_path('asset/Scan.pdf').' '.public_path('').' --force-ocr';
-//    // dd($cmd);
-//        $process = Process::timeout(900)->start($cmd);
-//
-//
-//        while ($process->running()) {
-//            echo $process->latestOutput();
-//            echo $process->latestErrorOutput();
-//
-//            sleep(1);
-//        }
-//        $result = $process->wait();
-//
-//        if ($result->successful()) {
-//            return "Done";
-//        }
-//      dd($result->errorOutput());
+    }
+
+    public function ocrConvert(Request $request){
+
+        dispatch(new \App\Jobs\OcrConvert($request->request->all()));
+       return ['success'=>true,"message"=>__('Dispatched')];
+
+
+       // $cmd= "ocrmypdf ".storage_path($file_path).' '.public_path($converted_file_path).' --force-ocr';
+      //  $cmd= "ocrmypdf ".storage_path("app/".$file_path).' '.public_path($converted_file_path).' --force-ocr';
+
     }
 
     /**
