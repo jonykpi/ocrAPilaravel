@@ -34,8 +34,8 @@ class OcrConvert implements ShouldQueue
     {
 
         $file_path = Str::random('17').".pdf";
-        // $converted_file_path = "asset/".Str::random('17').".pdf";
-        $converted_file_path = public_path('asset/ocr22.pdf');
+        $converted_file_path = "asset/".Str::random('17').".pdf";
+        //$converted_file_path = public_path('asset/ocr22.pdf');
 
         $stroage = Storage::put($file_path,base64_decode($this->request['content']));
 
