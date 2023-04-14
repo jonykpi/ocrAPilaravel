@@ -23,6 +23,7 @@ class OcrController extends Controller
 
     public function ocrConvert(Request $request){
 
+
         dispatch(new \App\Jobs\OcrConvert($request->request->all()));
        return ['success'=>true,"message"=>__('Dispatched')];
 
