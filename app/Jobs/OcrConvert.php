@@ -47,8 +47,8 @@ class OcrConvert implements ShouldQueue
             $process = Process::timeout(900)->start($cmd);
 
             while ($process->running()) {
-                 Log::info($process->latestOutput());
-                  Log::info($process->latestErrorOutput());
+//                 Log::info($process->latestOutput());
+//                  Log::info($process->latestErrorOutput());
 
                 sleep(1);
             }
@@ -58,6 +58,8 @@ class OcrConvert implements ShouldQueue
                 $data = $this->request;
                 $data['content'] =base64_encode(file_get_contents(public_path($converted_file_path)));
                 $response = Http::post($this->request['callback'], $data);
+                Log::info("incoming");
+                Log::info(json_encode($response->body()));
                 Log::info(json_encode('success ocr'));
 
             }
