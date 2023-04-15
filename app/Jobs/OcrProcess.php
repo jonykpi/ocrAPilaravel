@@ -23,6 +23,7 @@ class OcrProcess implements ShouldQueue
      * Create a new job instance.
      */
     public $request;
+    public $timeout = 60*10;
     public function __construct($request)
     {
         $this->request = $request;

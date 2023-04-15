@@ -18,6 +18,7 @@ class OcrConvert implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $timeout = 60*10;
 
     /**
      * Create a new job instance.
