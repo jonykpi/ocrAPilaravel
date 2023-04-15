@@ -64,7 +64,7 @@ class OcrProcess implements ShouldQueue
             Log::info(json_encode('success ocr'));
            // dd('success');
         }
-       Log::info(json_encode($result->errorOutput()));
+       Log::info(json_encode("error ocr=".$result->errorOutput()));
 
       //$response = Http::post('https://docs2ai.com/api/incoming', $this->request);
     //  dd($response);
