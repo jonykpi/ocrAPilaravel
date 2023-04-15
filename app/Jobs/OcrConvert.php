@@ -43,7 +43,7 @@ class OcrConvert implements ShouldQueue
         $stroage = Storage::put($file_path,base64_decode($this->request['content']));
 
         if (env('APP_ENV') != 'pc'){
-            $cmd= "ocrmypdf ".storage_path("app/".$file_path).' '.public_path($converted_file_path).' --force-ocr';
+            $cmd= "ocrmypdf ".storage_path("app/".$file_path).' '.public_path($converted_file_path).' --skip-text';
             $process = Process::timeout(900)->start($cmd);
 
             while ($process->running()) {

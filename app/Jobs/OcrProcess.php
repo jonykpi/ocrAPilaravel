@@ -43,7 +43,7 @@ class OcrProcess implements ShouldQueue
 
 
        // $cmd= "ocrmypdf ".storage_path($file_path).' '.public_path($converted_file_path).' --force-ocr';
-        $cmd= "ocrmypdf ".storage_path("app/".$file_path).' '.public_path($converted_file_path).' --force-ocr';
+        $cmd= "ocrmypdf ".storage_path("app/".$file_path).' '.public_path($converted_file_path).' --skip-text';
 
 //        shell_exec($cmd);
 
