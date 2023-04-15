@@ -47,8 +47,8 @@ class OcrConvert implements ShouldQueue
             $process = Process::timeout(900)->start($cmd);
 
             while ($process->running()) {
-                echo $process->latestOutput();
-                echo $process->latestErrorOutput();
+                 Log::info($process->latestOutput());
+                  Log::info($process->latestErrorOutput());
 
                 sleep(1);
             }
