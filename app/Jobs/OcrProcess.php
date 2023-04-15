@@ -60,7 +60,7 @@ class OcrProcess implements ShouldQueue
         if ($result->successful()) {
             $send_file = base64_encode(file_get_contents(public_path($converted_file_path)));
             $this->request['attachments'][0]['content'] = $send_file;
-            $response = Http::post('https://docs2ai.com/api/incoming', $this->request);
+            $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $this->request);
             Log::info(json_encode('success ocr'));
             Log::info("incoming");
             Log::info(json_encode($response->body()));
