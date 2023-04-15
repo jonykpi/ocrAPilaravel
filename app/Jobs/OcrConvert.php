@@ -68,4 +68,11 @@ class OcrConvert implements ShouldQueue
 
 
     }
+
+    public function failed(\Exception $exception)
+    {
+        // handle the failed job
+        Log::info('Job failed: '.$exception->getMessage());
+
+    }
 }
