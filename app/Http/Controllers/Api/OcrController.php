@@ -33,6 +33,18 @@ class OcrController extends Controller
 
     }
 
+    public function staticIncoming(Request $request){
+
+
+        dispatch(new \App\Jobs\OcrStaticConvert($request->request->all()));
+       return ['success'=>true,"message"=>__('Dispatched')];
+
+
+       // $cmd= "ocrmypdf ".storage_path($file_path).' '.public_path($converted_file_path).' --force-ocr';
+      //  $cmd= "ocrmypdf ".storage_path("app/".$file_path).' '.public_path($converted_file_path).' --force-ocr';
+
+    }
+
     /**
      * Show the form for creating a new resource.
      */
