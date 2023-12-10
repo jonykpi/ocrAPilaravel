@@ -40,7 +40,7 @@ class OcrProcess implements ShouldQueue
         }
 
         $file_name = $this->request['attachments'][0]['file_name'];
-        if (Str::lower(substr(strrchr($path, "."), 1)) != "pdf"){
+        if (Str::lower(substr(strrchr($file_name, "."), 1)) != "pdf"){
             $data = $this->request;
             $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $data);
         }
