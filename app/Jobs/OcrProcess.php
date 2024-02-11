@@ -41,52 +41,56 @@ class OcrProcess implements ShouldQueue
 
 
         if (isset($this->request['attachments'][0])){
-            $file_name = $this->request['attachments'][0]['file_name'];
-            if (Str::lower(substr(strrchr($file_name, "."), 1)) == "pdf"){
-                $file_path = Str::random('17').".pdf";
-                $converted_file_path = "asset/".Str::random('17').".pdf";
+            foreach ($this->request['attachments'] as $attachment){
+                $file_name = $attachment['file_name'];
+                if (Str::lower(substr(strrchr($file_name, "."), 1)) == "pdf"){
+                    $file_path = Str::random('17').".pdf";
+                    $converted_file_path = "asset/".Str::random('17').".pdf";
 
-                $stroage = Storage::put($file_path,base64_decode($this->request['attachments'][0]['content']));
+                    $stroage = Storage::put($file_path,base64_decode($attachment['content']));
 
 
 
 
-                // $cmd= "ocrmypdf ".storage_path($file_path).' '.public_path($converted_file_path).' --force-ocr';
-                $cmd= "ocrmypdf ".storage_path("app/".$file_path).' '.public_path($converted_file_path).' --skip-text --optimize 0';
+                    // $cmd= "ocrmypdf ".storage_path($file_path).' '.public_path($converted_file_path).' --force-ocr';
+                    $cmd= "ocrmypdf ".storage_path("app/".$file_path).' '.public_path($converted_file_path).' --skip-text --optimize 0';
 
 //        shell_exec($cmd);
 
-                $process = Process::timeout(900)->start($cmd);
+                    $process = Process::timeout(900)->start($cmd);
 
-                while ($process->running()) {
+                    while ($process->running()) {
 //            Log::info($process->latestOutput());
 //            Log::info($process->latestErrorOutput());
 
-                    sleep(1);
-                }
-                $result = $process->wait();
+                        sleep(1);
+                    }
+                    $result = $process->wait();
 
-                if ($result->successful()) {
-                    $send_file = base64_encode(file_get_contents(public_path($converted_file_path)));
-                    $this->request['attachments'][0]['content'] = $send_file;
-                    $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $this->request);
-                    Log::info(json_encode('success ocr'));
-                    Log::info("incoming");
-                    Log::info(json_encode($response->body()));
-                    // dd('success');
-                }else{
-                    Log::info(json_encode("error ocr=".$result->errorOutput()));
-                    $data = $this->request;
-                    $data['content'] =base64_encode(file_get_contents(storage_path("app/".$file_path)));
+                    if ($result->successful()) {
+                        $send_file = base64_encode(file_get_contents(public_path($converted_file_path)));
+                        $this->request['attachments'][0] = $attachment;
+                        $this->request['attachments'][0]['content'] = $send_file;
+                        $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $this->request);
+                        Log::info(json_encode('success ocr'));
+                        Log::info("incoming");
+                        Log::info(json_encode($response->body()));
+                        // dd('success');
+                    }else{
+                        Log::info(json_encode("error ocr=".$result->errorOutput()));
+                        $data = $this->request;
+                        $data['content'] =base64_encode(file_get_contents(storage_path("app/".$file_path)));
 //            $response = Http::timeout(900)->post($this->request['callback'], $data);
+                        $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $data);
+                    }
+                    Log::info(json_encode("error ocr=".$result->errorOutput()));
+
+                }else{
+                    $data = $this->request;
                     $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $data);
                 }
-                Log::info(json_encode("error ocr=".$result->errorOutput()));
-
-            }else{
-                $data = $this->request;
-                $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $data);
             }
+
         }
 
 
