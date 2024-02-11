@@ -87,6 +87,7 @@ class OcrProcess implements ShouldQueue
 
                 }else{
                     $data = $this->request;
+                    $data['attachments'][0] = $attachment;
                     $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $data);
                 }
             }
