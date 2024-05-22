@@ -73,6 +73,7 @@ class OcrProcess implements ShouldQueue
                         $this->request['attachments'][0] = $attachment;
                         $this->request['attachments'][0]['content'] = $send_file;
                         $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $this->request);
+                        Log::info(json_encode($attachment));
                         Log::info(json_encode('success ocr'));
                         Log::info("incoming");
                         Log::info(json_encode($response->body()));
