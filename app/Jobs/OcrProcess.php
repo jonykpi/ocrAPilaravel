@@ -99,7 +99,7 @@ class OcrProcess implements ShouldQueue
                 }
 
 
-                Log::info(json_encode($this->request));
+                Log::info(json_encode($this->request['attachments'][0]));
                 Log::info("====================================");
 
                 sleep(30);
