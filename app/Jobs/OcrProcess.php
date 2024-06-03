@@ -61,8 +61,8 @@ class OcrProcess implements ShouldQueue
                     $process = Process::timeout(900)->start($cmd);
 
                     while ($process->running()) {
-//            Log::info($process->latestOutput());
-//            Log::info($process->latestErrorOutput());
+            Log::info($process->latestOutput());
+            Log::info($process->latestErrorOutput());
 
                         sleep(1);
                     }
@@ -77,7 +77,7 @@ class OcrProcess implements ShouldQueue
 
                         // dd('success');
                     }else{
-//                        Log::info(json_encode("error ocr=".$result->errorOutput()));
+                        Log::info(json_encode("error ocr=".$result->errorOutput()));
 //                        $data = $this->request;
                         $data['content'] =base64_encode(file_get_contents(storage_path("app/".$file_path)));
 
