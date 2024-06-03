@@ -73,6 +73,7 @@ class OcrProcess implements ShouldQueue
                         $send_file = base64_encode(file_get_contents(public_path($converted_file_path)));
                         $this->request['attachments'][0] = $attachment;
                         $this->request['attachments'][0]['content'] = $send_file;
+                        Log::info("try to sent");
                         $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $this->request);
 
 
@@ -85,13 +86,14 @@ class OcrProcess implements ShouldQueue
                         $this->request['attachments'][0] = $attachment;
                         $this->request['attachments'][0]['content'] = $data['content'];
 
-
+                        Log::info("try to sent");
 //            $response = Http::timeout(900)->post($this->request['callback'], $data);
                         $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming',  $this->request);
                     }
                  //   Log::info(json_encode("error ocr=".$result->errorOutput()));
 
                 }else{
+                    Log::info("try to sent");
                     $this->request['attachments'][0] = $attachment;
                     $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming',  $this->request);
                 }
