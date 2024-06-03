@@ -47,7 +47,7 @@ class OcrProcess implements ShouldQueue
                 if (Str::lower(substr(strrchr($file_name, "."), 1)) == "pdf"){
                     $file_path = Str::random('17').".pdf";
                     $converted_file_path = "asset/".Str::random('17').".pdf";
-                    dd($stroage);
+
                     $stroage = Storage::put($file_path,base64_decode($attachment['content']));
 
 
@@ -56,7 +56,7 @@ class OcrProcess implements ShouldQueue
 
                     // $cmd= "ocrmypdf ".storage_path($file_path).' '.public_path($converted_file_path).' --force-ocr';
                     $cmd= "ocrmypdf ".storage_path("app/".$file_path).' '.public_path($converted_file_path).' --skip-text --optimize 0';
-
+dd($cmd);
 //        shell_exec($cmd);
 
                     $process = Process::timeout(900)->start($cmd);
