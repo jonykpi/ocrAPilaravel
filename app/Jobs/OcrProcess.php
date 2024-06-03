@@ -49,6 +49,7 @@ class OcrProcess implements ShouldQueue
                     $converted_file_path = "asset/".Str::random('17').".pdf";
 
                     $stroage = Storage::put($file_path,base64_decode($attachment['content']));
+                    dd($stroage);
 
 
 
