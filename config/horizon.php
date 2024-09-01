@@ -180,7 +180,7 @@ return [
     */
 
     'defaults' => [
-        'supervisor-1' => [
+        'supervisor-2' => [
             'connection' => 'redis',
             'queue' => ['default'],
             'balance' => 'auto',
@@ -197,7 +197,7 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
+            'supervisor-2' => [
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
@@ -205,7 +205,7 @@ return [
         ],
 
         'local' => [
-            'supervisor-1' => [
+            'supervisor-2' => [
                 'maxProcesses' => 3,
             ],
         ],
