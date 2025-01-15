@@ -52,34 +52,30 @@ class OcrProcess implements ShouldQueue
 
 
 
+                    $pythonVenv = '/var/www/admin.xtiplyai.com/html/app/Console/Commands/Python/venv/bin/activate'; // Path to your venv
+//        $script_path = "/Users/jony/projects/mupdf/file_to_image.py"; // Path to your venv
+                    $script_path = '/var/www/admin.xtiplyai.com/html/app/Console/Commands/Python/azure_ocr.py'; // Path to your venv
+                    $azure_end_point = env('AZURE_OCR_ENDPOINT');
+                    $azure_secrect_key = env('AZURE_OCR_KEY');
+                    //  $command = "source $pythonVenv && python3 $script_path " .escapeshellarg($apiKey)." ". escapeshellarg($inputPdfs) . " " . escapeshellarg($outputDir) . " " . escapeshellarg($openaiModel) ;
+                    $command = "bash -c 'source $pythonVenv && python3 $script_path " . escapeshellarg(storage_path("app/".$file_path)) . " " . escapeshellarg($azure_end_point) . " " . escapeshellarg($azure_secrect_key) . " && deactivate' 2>&1";
 
+                    $output = shell_exec($command);
 
-                    // $cmd= "ocrmypdf ".storage_path($file_path).' '.public_path($converted_file_path).' --force-ocr';
-                    $cmd= "ocrmypdf ".storage_path("app/".$file_path).' '.public_path($converted_file_path).' --skip-text --optimize 0';
+                    $converted_file_path = str_replace("\n", "",$output);
 
-//        shell_exec($cmd);
-
-                    $process = Process::timeout(900)->start($cmd);
-
-                    while ($process->running()) {
-            Log::info($process->latestOutput());
-            Log::info($process->latestErrorOutput());
-
-                        sleep(1);
-                    }
-                    $result = $process->wait();
-
-                    if ($result->successful()) {
-                        $send_file = base64_encode(file_get_contents(public_path($converted_file_path)));
+                    if (file_exists($converted_file_path)) {
+                        $send_file = base64_encode(file_get_contents($converted_file_path));
                         $this->request['attachments'][0] = $attachment;
                         $this->request['attachments'][0]['content'] = $send_file;
-                        Log::info("try to sent");
+                        Log::info("try to sent converted");
                         $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $this->request);
 
 
                         // dd('success');
                     }else{
-                        Log::info(json_encode("error ocr=".$result->errorOutput()));
+                        Log::info("try to not converted just sent");
+//                        Log::info(json_encode("error ocr=".$result->errorOutput()));
 //                        $data = $this->request;
                         $data['content'] =base64_encode(file_get_contents(storage_path("app/".$file_path)));
 
