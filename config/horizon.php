@@ -182,15 +182,15 @@ return [
     'defaults' => [
         'supervisor-2' => [
             'connection' => 'redis',
-            'queue' => ['default'],
+            'queue' => ['ocr_api'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
-            'maxProcesses' => 1,
+            'maxProcesses' => 3,
             'maxTime' => 0,
             'maxJobs' => 0,
             'memory' => -1,
             'tries' => 1,
-            'timeout' => 900,
+            'timeout' => 1900,
             'nice' => 0,
         ],
     ],

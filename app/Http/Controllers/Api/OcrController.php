@@ -17,14 +17,14 @@ class OcrController extends Controller
      */
     public function index(Request $request)
     {
-       dispatch(new \App\Jobs\OcrProcess($request->request->all()));
+       dispatch(new \App\Jobs\OcrProcess($request->request->all()))->onQueue('ocr_api');
 
     }
 
     public function ocrConvert(Request $request){
 
 
-        dispatch(new \App\Jobs\OcrConvert($request->request->all()));
+        dispatch(new \App\Jobs\OcrConvert($request->request->all()))->onQueue('ocr_api');
        return ['success'=>true,"message"=>__('Dispatched')];
 
 
@@ -36,7 +36,7 @@ class OcrController extends Controller
     public function staticIncoming(Request $request){
 
 
-        dispatch(new \App\Jobs\OcrStaticConvert($request->request->all()));
+        dispatch(new \App\Jobs\OcrStaticConvert($request->request->all()))->onQueue('ocr_api');
        return ['success'=>true,"message"=>__('Dispatched')];
 
 
