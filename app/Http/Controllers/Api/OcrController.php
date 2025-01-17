@@ -17,6 +17,7 @@ class OcrController extends Controller
      */
     public function index(Request $request)
     {
+        Log::info("Job dispatched");
        dispatch(new \App\Jobs\OcrProcess($request->request->all()))->onQueue('ocr_api');
 
     }
