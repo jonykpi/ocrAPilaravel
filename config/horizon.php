@@ -185,15 +185,16 @@ return [
             'queue' => ['ocr_api'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
-            'maxProcesses' => 3,
+            'maxProcesses' => 1,
             'maxTime' => 0,
             'maxJobs' => 0,
             'memory' => -1,
-            'tries' => 1,
-            'timeout' => 1900,
+            'tries' => 0,  // No retries
+            'timeout' => 86400,  // Set timeout to a large value (24 hours)
             'nice' => 0,
         ],
     ],
+
 
     'environments' => [
         'production' => [
