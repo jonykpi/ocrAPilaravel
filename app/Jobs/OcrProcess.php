@@ -63,7 +63,7 @@ class OcrProcess implements ShouldQueue
                     $output = shell_exec($command);
 
                     $converted_file_path = str_replace("\n", "",$output);
-
+dd($converted_file_path);
                     if (file_exists($converted_file_path)) {
                         $send_file = base64_encode(file_get_contents($converted_file_path));
                         $this->request['attachments'][0] = $attachment;
