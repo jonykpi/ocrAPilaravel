@@ -70,7 +70,7 @@ class OcrProcess implements ShouldQueue
                         $this->request['attachments'][0]['content'] = $send_file;
                         Log::info("try to sent converted");
                         $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $this->request);
-
+                        Log::info($response);
 
                         // dd('success');
                     }else{
