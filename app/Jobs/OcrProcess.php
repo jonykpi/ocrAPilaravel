@@ -41,7 +41,7 @@ class OcrProcess implements ShouldQueue
           $total_files = [];
 
         if (isset($this->request['attachments'][0])){
-                Log::info("total");
+                
 
             foreach ($this->request['attachments'] as $attachment){
                 $file_name = $attachment['file_name'];
