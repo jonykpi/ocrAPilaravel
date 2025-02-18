@@ -38,13 +38,19 @@ class OcrProcess implements ShouldQueue
             $data = $this->request;
             $response = Http::timeout(900)->post('https://docs2ai.com/api/incoming', $data);
         }
-
+          $total_files = [];
 
         if (isset($this->request['attachments'][0])){
                 Log::info("total");
-                Log::info($this->request['attachments']);
+
             foreach ($this->request['attachments'] as $attachment){
                 $file_name = $attachment['file_name'];
+                if (!isset($total_files[$file_name])){
+                    array_push($total_files,$file_name);
+                }else{
+                    continue;
+                }
+
                 if (Str::lower(substr(strrchr($file_name, "."), 1)) == "pdf"){
                     $file_path = Str::random('17').".pdf";
                     $converted_file_path = "asset/".Str::random('17').".pdf";
